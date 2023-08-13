@@ -15,7 +15,7 @@
     <!-- HEADER -->
     <header>
       <div class="netflixLogo">
-        <a id="logo" href="#home"><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/logo.PNG?raw=true" alt="Logo Image"></a>
+        <a id="logo" href="/"><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/logo.PNG?raw=true" alt="Logo Image"></a>
       </div>      
       <nav class="main-nav">                
         <a href="#home">Home</a>
@@ -26,60 +26,39 @@
         <a target="_blank" href="https://codepen.io/cb2307/full/NzaOrm">Portfolio</a>        
       </nav>
       <nav class="sub-nav">
-        <a href="#"></a>
         <form action="/" method="POST">
             {% csrf_token %}
             {{ search_form.as_p }}
             <button type="submit">
               <i class="fas fa-search sub-nav-logo"></i>
             </button>
-        </form>
+        </form>        
         <a href="#"><i class="fas fa-bell sub-nav-logo"></i></a>
         {% if request.user.is_authenticated %}
           {{ request.user }}
           <a href="/logout"><i class="fas fa-power-off sub-nav-logo"></i>Logout</a>
         {% else %}
-            {% if request.user.is_authenticated %}
-                {{ request.user }}
-                    <a href="/logout"><i class="fas fa-power-off sub-nav-logo"></i>Logout</a>
-            {% else %}
-                <a href="/register">Register</a><a href="/login">Login</a>
-            {% endif %}
+          <a href="/register">Register</a><a href="/login">Login</a>
         {% endif %}
-      </nav> 
+      </nav>      
     </header>
     <!-- END OF HEADER -->
     
     <!-- MAIN CONTAINER -->
-    <section class="main-container" >
-      <div class="location" id="home">
-          <h1 id="home">Action</h1>
-          <div class="box">
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p1.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p2.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p3.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p4.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p5.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p6.PNG?raw=true" alt=""></a>
-    
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p7.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p8.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p9.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p10.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p11.PNG?raw=true" alt=""></a>
-            <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/p12.PNG?raw=true" alt=""></a>        
+    <section class="main-container">
+        <div class="location" id="home">
+            {% for category, movies in data %}
+              <h1>{{category}}</h1>
+              <div class="box">
+              {% for movie in movies %}
+                <a href="/watch?movie_pk={{movie.pk}}" style="text-decoration: none; color: white">
+                  <img src="/media/{{movie.preview_image}}" alt="{{movie.name}}">
+                  <span>{{movie.name}}</span>
+                </a>
+              {% endfor %}
+              </div>
+            {% endfor %}
           </div>
-      </div>
-
-      <h1 id="myList">Adventure</h1>
-      <div class="box">
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t1.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t2.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t3.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t4.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t5.PNG?raw=true" alt=""></a>
-        <a href=""><img src="https://github.com/carlosavilae/Netflix-Clone/blob/master/img/t6.PNG?raw=true" alt=""></a>                  
-      </div>
     <!-- END OF MAIN CONTAINER -->
 
     <!-- LINKS -->

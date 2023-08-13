@@ -5,10 +5,32 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login,logout
+from .models import Movie
+from .forms import SearchForm
+
+PAGE_SIZE_PER_CATEGORY = 20
 
 def index_view(request):
     """Home page view."""
-    return render(request, 'netflix/index.html')
+    # We define the list of categories we want to display
+    categories_to_display = ['Action', 'Adventure']
+
+    data = {}
+    # We create a dictionary that map each category with the it movies
+    for category_name in categories_to_display:
+        movies = Movie.objects.filter(category__name=category_name)
+        if request.method == 'POST':
+            search_text = request.POST.get('search_text')
+            movies = movies.filter(name__icontains=search_text)
+        # we limit the number of movies to PAGE_SIZE_PER_CATEGORY = 20
+        data[category_name] = movies[:PAGE_SIZE_PER_CATEGORY]
+
+    search_form = SearchForm()
+    # We return the response with the data
+    return render(request, 'netflix/index.html', {
+        'data': data.items(),
+        'search_form': search_form
+    })
 
 def register_view(request):
     """Registration view."""
@@ -64,3 +86,17 @@ def logout_view(request):
     logout(request)
     # redirect user to home page
     return HttpResponseRedirect('/')
+
+def watch_movie_view(request):
+    """Watch view."""
+    # The primary key of the movie the user wants to watch is sent by GET parameters.
+    # We retrieve that pk.
+    movie_pk = request.GET.get('movie_pk')
+    # We try to get from the database, the movie with the given pk 
+    try:
+        movie = Movie.objects.get(pk=movie_pk)
+    except Movie.DoesNotExist:
+        # if that movie doesn't exist, Movie.DoesNotExist exception is raised
+        # and we then catch it and set the URL to None instead
+        movie = None
+    return render(request, 'netflix/watch_movie.html', {'movie': movie})

@@ -1,0 +1,8 @@
+{% if movie %}
+  <h3 style="padding: 15px">{{movie.name}}</h3>
+  <video width="100%" height="70%" controls>
+    <source src="/media/{{movie.file}}" type="video/mp4">
+  </video>
+{% else %}
+  <strong style="font-size: 25px">Invalid url</strong>
+{% endif %}

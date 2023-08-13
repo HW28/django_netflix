@@ -22,6 +22,7 @@ from netflix.views import index_view
 from netflix.views import login_view 
 from netflix.views import register_view 
 from netflix.views import logout_view
+from netflix.views import watch_movie_view 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,6 +30,7 @@ urlpatterns = [
     path('register', register_view, name='register'), 
     path('login', login_view, name='login'),
     path('logout', logout_view, name='logout'),
+    path('watch', watch_movie_view, name='watch_movie'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
