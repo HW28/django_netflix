@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  # Define the web service (Your Django application)
+  web:
+    # Build an image using the Dockerfile in the current directory
+    build: .
+    # Command to run upon container start
+    command: python3 manage.py runserver 0.0.0.0:8000
+    # Mount the current directory inside the container
+    volumes:
+      - .:/app
+    # Map the port 8000 of the container to port 8000 of the host
+    ports:
+      - "8000:8000"
